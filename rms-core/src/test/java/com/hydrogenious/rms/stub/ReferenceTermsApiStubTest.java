@@ -10,11 +10,11 @@ import java.util.Set;
 import static org.junit.Assert.*;
 
 public class ReferenceTermsApiStubTest {
+
     @Test
     public void findAllReferenceTerms() {
         final ReferenceTermsApiStub referenceTermsApi = new ReferenceTermsApiStub(Collections.emptySet());
         final Set<ReferenceTerm> allReferenceTerms = referenceTermsApi.findAllReferenceTerms();
         assertThat(allReferenceTerms, Is.is(Collections.emptySet()));
     }
-
 }
