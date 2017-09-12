@@ -1,0 +1,18 @@
+allprojects {
+    group 'com.hydrogenious.rms'
+
+    apply plugin: 'java'
+
+    repositories {
+        mavenCentral()
+    }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    dependencies {
+        compile 'org.springframework:spring-context-support:4.3.10.RELEASE'
+
+        testCompile 'junit:junit:4.12'
+    }
+}
