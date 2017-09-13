@@ -1,6 +1,4 @@
-package com.hydrogenious.rms.api;
-
-import com.hydrogenious.rms.model.ReferenceTerm;
+package com.hydrogenious.rms.referenceterms;
 
 import java.util.Set;
 
