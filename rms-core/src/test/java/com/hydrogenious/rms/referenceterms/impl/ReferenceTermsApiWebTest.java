@@ -1,6 +1,6 @@
-package com.hydrogenious.rms.stub;
+package com.hydrogenious.rms.referenceterms.impl;
 
-import com.hydrogenious.rms.model.ReferenceTerm;
+import com.hydrogenious.rms.referenceterms.ReferenceTerm;
 import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Test;
@@ -8,11 +8,11 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.Set;
 
-public class ReferenceTermsApiStubTest {
+public class ReferenceTermsApiWebTest {
 
     @Test
     public void findAllReferenceTerms() {
-        final ReferenceTermsApiStub referenceTermsApi = new ReferenceTermsApiStub(Collections.emptySet());
+        final ReferenceTermsApiWeb referenceTermsApi = new ReferenceTermsApiWeb();
         final Set<ReferenceTerm> allReferenceTerms = referenceTermsApi.findAllReferenceTerms();
         Assert.assertThat(allReferenceTerms, Is.is(Collections.emptySet()));
     }

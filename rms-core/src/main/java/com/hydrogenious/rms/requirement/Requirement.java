@@ -1,4 +1,4 @@
-package com.hydrogenious.rms.model;
+package com.hydrogenious.rms.requirement;
 
 /**
  * Требование
