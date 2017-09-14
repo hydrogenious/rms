@@ -1,10 +1,8 @@
 package com.hydrogenious.rms.referenceterms.impl;
 
-import com.hydrogenious.rms.referenceterms.ReferenceTermsApi;
 import com.hydrogenious.rms.referenceterms.ReferenceTerm;
+import com.hydrogenious.rms.referenceterms.ReferenceTermsApi;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;

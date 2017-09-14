@@ -6,7 +6,7 @@ public class RmsInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] { RmsApplication.class };
+        return new Class[]{RmsApplication.class};
     }
 
     @Override
@@ -16,6 +16,6 @@ public class RmsInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] { "/" };
+        return new String[]{"/"};
     }
 }
