@@ -24,14 +24,21 @@ allprojects {
     ext.springVersion = '4.3.10.RELEASE'
     ext.javaxServletVersion = '3.0.1'
     ext.jacksonVersion = '2.9.1'
+    ext.springJpaVersion = '1.11.6.RELEASE'
+    ext.hibernateVersion = '5.2.10.Final'
 
     dependencies {
         compile "org.springframework:spring-context-support:$springVersion"
         compile "org.springframework:spring-webmvc:$springVersion"
+        compile "org.springframework.data:spring-data-jpa:$springJpaVersion"
+        compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
         compile "javax.servlet:javax.servlet-api:$javaxServletVersion"
         compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
 
+        runtime "com.h2database:h2:1.4.196"
+
         testCompile 'junit:junit:4.12'
+        testRuntime 'org.mockito:mockito-all:1.10.19'
     }
 
     jacocoTestReport {
