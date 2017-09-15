@@ -1,0 +1,9 @@
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+
+ext.javaxServletVersion = '3.0.1'
+
+dependencies {
+    compile project(':rms-core')
+    compile "javax.servlet:javax.servlet-api:$javaxServletVersion"
+}

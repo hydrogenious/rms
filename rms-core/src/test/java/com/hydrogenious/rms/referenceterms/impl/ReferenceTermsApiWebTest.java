@@ -5,8 +5,6 @@ import com.hydrogenious.rms.referenceterms.ReferenceTermsRepository;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.RepositoryCache;
 import org.eclipse.jgit.util.FS;
-import org.hamcrest.Matchers;
-import org.hamcrest.core.Is;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -15,7 +13,6 @@ import org.junit.rules.TemporaryFolder;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
