@@ -22,13 +22,11 @@ allprojects {
     targetCompatibility = 1.8
 
     ext.springVersion = '4.3.10.RELEASE'
-    ext.javaxServletVersion = '3.0.1'
     ext.jacksonVersion = '2.9.1'
 
     dependencies {
         compile "org.springframework:spring-context-support:$springVersion"
         compile "org.springframework:spring-webmvc:$springVersion"
-        compile "javax.servlet:javax.servlet-api:$javaxServletVersion"
         compile "com.fasterxml.jackson.core:jackson-databind:$jacksonVersion"
 
         testCompile 'junit:junit:4.12'
