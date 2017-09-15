@@ -1,19 +1,13 @@
 package com.hydrogenious.rms;
 
+import org.eclipse.jgit.util.FS;
+import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.context.annotation.*;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import javax.persistence.EntityManagerFactory;
 
 @Configuration
 @EnableWebMvc
 @ComponentScan("com.hydrogenious.rms")
-@EnableJpaRepositories
-@EnableTransactionManagement
 @PropertySource("classpath:/application.properties")
 public class RmsApplication {
 
@@ -22,8 +16,18 @@ public class RmsApplication {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory);
+    public AbstractFactoryBean<FS> fileSystemFactory() {
+        return new AbstractFactoryBean<FS>() {
+            @Override
+            public Class<?> getObjectType() {
+                return FS.class;
+            }
+
+            @Override
+            protected FS createInstance() throws Exception {
+                return FS.DETECTED;
+            }
+        };
     }
 }
 

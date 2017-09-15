@@ -2,23 +2,19 @@ package com.hydrogenious.rms.referenceterms.impl;
 
 import com.hydrogenious.rms.referenceterms.ReferenceTerm;
 import com.hydrogenious.rms.requirement.Requirement;
+import org.eclipse.jgit.lib.Repository;
 
-import javax.persistence.*;
 import java.util.Collections;
 import java.util.Set;
 
-@Entity
-public class DbReferenceTerm implements ReferenceTerm {
+public class GitReferenceTerm implements ReferenceTerm {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private final Repository repository;
 
-    public long getId() {
-        return id;
+    public GitReferenceTerm(Repository repository) {
+        this.repository = repository;
     }
 
-    @Transient
     @Override
     public Set<Requirement> getRequirements() {
         return Collections.emptySet();

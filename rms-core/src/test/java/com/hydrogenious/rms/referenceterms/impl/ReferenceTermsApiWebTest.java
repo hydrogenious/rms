@@ -2,31 +2,49 @@ package com.hydrogenious.rms.referenceterms.impl;
 
 import com.hydrogenious.rms.referenceterms.ReferenceTerm;
 import com.hydrogenious.rms.referenceterms.ReferenceTermsRepository;
+import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.RepositoryCache;
+import org.eclipse.jgit.util.FS;
+import org.hamcrest.Matchers;
 import org.hamcrest.core.Is;
 import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 
-import static org.mockito.Mockito.doReturn;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.iterableWithSize;
 
-@RunWith(MockitoJUnitRunner.class)
+
 public class ReferenceTermsApiWebTest {
 
-    @Mock
+    @Rule
+    public final TemporaryFolder folder = new TemporaryFolder();
+
     private ReferenceTermsRepository referenceTermsRepository;
+
+    @Before
+    public void setUp() throws IOException {
+        referenceTermsRepository = new GitReferenceTermsRepository(folder.getRoot().getPath(), FS.DETECTED);
+
+        File gitRepo = folder.newFolder("git-repo");
+        folder.newFolder("not-git-repo");
+
+        FileRepository fileRepository = new FileRepository(gitRepo);
+        fileRepository.create(true);
+        RepositoryCache.register(fileRepository);
+    }
 
     @Test
     public void findAllReferenceTerms() {
-        doReturn(Collections.emptySet())
-                .when(referenceTermsRepository).findAll();
-
         final ReferenceTermsApiWeb referenceTermsApi = new ReferenceTermsApiWeb(referenceTermsRepository);
         final Set<? extends ReferenceTerm> allReferenceTerms = referenceTermsApi.findAllReferenceTerms();
-        Assert.assertThat(allReferenceTerms, Is.is(Collections.emptySet()));
+        Assert.assertThat(allReferenceTerms, is(iterableWithSize(1)));
     }
 }
