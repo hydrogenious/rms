@@ -18,17 +18,19 @@ import java.util.stream.Stream;
 public class FileSystemGitRepositories implements GitRepositories {
 
     private final File repositoriesRoot;
+
     private final FS fileSystem;
 
     @Autowired
-    public FileSystemGitRepositories(@Value("${repositoriesRootPath}") String repositoriesRootPath, FS fileSystem) {
+    public FileSystemGitRepositories(@Value("${repositoriesRootPath}") final String repositoriesRootPath,
+                                     final FS fileSystem) {
         this.repositoriesRoot = new File(repositoriesRootPath);
         this.fileSystem = fileSystem;
     }
 
     @Override
     public Stream<Repository> getAll() {
-        File[] subFolders = repositoriesRoot.listFiles();
+        final File[] subFolders = repositoriesRoot.listFiles();
 
         if (subFolders == null) {
             return Stream.empty();
@@ -41,7 +43,7 @@ public class FileSystemGitRepositories implements GitRepositories {
                 .map(Optional::get);
     }
 
-    private Optional<Repository> tryGetRepository(File folder) {
+    private Optional<Repository> tryGetRepository(final File folder) {
         return Optional.ofNullable(RepositoryCache.FileKey.resolve(folder, fileSystem))
                 .map(it -> RepositoryCache.FileKey.lenient(it, fileSystem))
                 .flatMap(key -> {
