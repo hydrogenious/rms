@@ -11,10 +11,11 @@ public class GitReferenceTerm implements ReferenceTerm {
 
     private final Repository repository;
 
-    public GitReferenceTerm(Repository repository) {
+    public GitReferenceTerm(final Repository repository) {
         this.repository = repository;
     }
 
+    // @todo #2h get and return requirements from git repository
     @Override
     public Set<Requirement> getRequirements() {
         return Collections.emptySet();

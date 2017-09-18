@@ -1,5 +1,6 @@
 package com.hydrogenious.rms.referenceterms.impl;
 
+import com.hydrogenious.rms.git.impl.FileSystemGitRepositories;
 import com.hydrogenious.rms.referenceterms.ReferenceTerm;
 import com.hydrogenious.rms.referenceterms.ReferenceTermsRepository;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
@@ -28,7 +29,8 @@ public class ReferenceTermsApiWebTest {
 
     @Before
     public void setUp() throws IOException {
-        referenceTermsRepository = new GitReferenceTermsRepository(folder.getRoot().getPath(), FS.DETECTED);
+        referenceTermsRepository = new GitReferenceTermsRepository(
+                new FileSystemGitRepositories(folder.getRoot().getPath(), FS.DETECTED));
 
         File gitRepo = folder.newFolder("git-repo");
         folder.newFolder("not-git-repo");

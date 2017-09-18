@@ -13,7 +13,7 @@ public class ReferenceTermsApiWeb implements ReferenceTermsApi {
 
     private final ReferenceTermsRepository referenceTermsRepository;
 
-    public ReferenceTermsApiWeb(ReferenceTermsRepository referenceTermsRepository) {
+    public ReferenceTermsApiWeb(final ReferenceTermsRepository referenceTermsRepository) {
         this.referenceTermsRepository = referenceTermsRepository;
     }
 
