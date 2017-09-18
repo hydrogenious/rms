@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Component
-public class FileSystemGitRepositories implements GitRepositories {
+public final class FileSystemGitRepositories implements GitRepositories {
 
     private final File repositoriesRoot;
 

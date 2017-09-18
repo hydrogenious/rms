@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class GitReferenceTermsRepository implements ReferenceTermsRepository {
+public final class GitReferenceTermsRepository implements ReferenceTermsRepository {
 
     private final GitRepositories gitRepositories;
 

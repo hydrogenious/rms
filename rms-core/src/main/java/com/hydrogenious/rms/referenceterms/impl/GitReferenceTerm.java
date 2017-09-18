@@ -7,7 +7,7 @@ import org.eclipse.jgit.lib.Repository;
 import java.util.Collections;
 import java.util.Set;
 
-public class GitReferenceTerm implements ReferenceTerm {
+public final class GitReferenceTerm implements ReferenceTerm {
 
     private final Repository repository;
 
