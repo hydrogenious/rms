@@ -19,13 +19,9 @@ public final class FileSystemGitRepositories implements GitRepositories {
 
     private final File repositoriesRoot;
 
-    private final FS fileSystem;
-
     @Autowired
-    public FileSystemGitRepositories(@Value("${repositoriesRootPath}") final String repositoriesRootPath,
-                                     final FS fileSystem) {
+    public FileSystemGitRepositories(@Value("${repositoriesRootPath}") final String repositoriesRootPath) {
         this.repositoriesRoot = new File(repositoriesRootPath);
-        this.fileSystem = fileSystem;
     }
 
     @Override
@@ -44,8 +40,8 @@ public final class FileSystemGitRepositories implements GitRepositories {
     }
 
     private Optional<Repository> tryGetRepository(final File folder) {
-        return Optional.ofNullable(RepositoryCache.FileKey.resolve(folder, fileSystem))
-                .map(it -> RepositoryCache.FileKey.lenient(it, fileSystem))
+        return Optional.ofNullable(RepositoryCache.FileKey.resolve(folder, FS.DETECTED))
+                .map(it -> RepositoryCache.FileKey.lenient(it, FS.DETECTED))
                 .flatMap(key -> {
                     try {
                         return Optional.of(new FileRepository(key.getFile()));
