@@ -22,4 +22,8 @@ public class GitRequirement implements Requirement {
         ObjectLoader objectLoader = repository.open(objectId);
         return objectLoader.getBytes();
     }
+
+    public String getName() {
+        return objectId.getName();
+    }
 }
