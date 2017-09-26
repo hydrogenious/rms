@@ -224,11 +224,11 @@
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
         <module name="StaticVariableName"/>
-        <module name="UniqueProperties">
-            <property name="fileExtensions" value="properties" />
-        </module>
         <module name="UnusedImports"/>
         <module name="CyclomaticComplexity"/>
         <module name="AvoidStaticImport"/>
+    </module>
+    <module name="UniqueProperties">
+        <property name="fileExtensions" value="properties" />
     </module>
 </module>
