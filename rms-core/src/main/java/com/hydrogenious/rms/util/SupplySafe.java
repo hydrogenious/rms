@@ -7,7 +7,7 @@ public final class SupplySafe<T, E extends Exception> implements Supplier<Option
 
     private final SupplierWithCheckedThrows<T, E> delegate;
 
-    public SupplySafe(SupplierWithCheckedThrows<T, E> delegate) {
+    private SupplySafe(SupplierWithCheckedThrows<T, E> delegate) {
         this.delegate = delegate;
     }
 
@@ -21,8 +21,7 @@ public final class SupplySafe<T, E extends Exception> implements Supplier<Option
         return Optional.empty();
     }
 
-    public static <T, E extends Exception>
-    Supplier<Optional<T>> trySupply(SupplierWithCheckedThrows<T, E> delegate) {
+    public static <T, E extends Exception> Supplier<Optional<T>> trySupply(SupplierWithCheckedThrows<T, E> delegate) {
         return new SupplySafe<>(delegate);
     }
 }

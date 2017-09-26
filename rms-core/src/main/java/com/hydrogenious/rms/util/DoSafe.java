@@ -21,8 +21,8 @@ public final class DoSafe<T, R, E extends Exception> implements Function<T, Opti
         return Optional.empty();
     }
 
-    public static <T, R, E extends Exception>
-    Function<T, Optional<R>> tryDo(FunctionWithCheckedThrows<T, R, E> delegate) {
+    public static <T, R, E extends Exception> Function<T, Optional<R>> tryDo(
+            FunctionWithCheckedThrows<T, R, E> delegate) {
         return new DoSafe<>(delegate);
     }
 }

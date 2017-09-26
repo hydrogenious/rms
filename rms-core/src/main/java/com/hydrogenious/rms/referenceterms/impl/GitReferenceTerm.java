@@ -5,17 +5,16 @@ import com.hydrogenious.rms.requirement.Requirement;
 import com.hydrogenious.rms.requirement.impl.GitRequirement;
 import com.hydrogenious.rms.util.DoSafe;
 import com.hydrogenious.rms.util.SupplySafe;
+import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
-
-import java.io.IOException;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public final class GitReferenceTerm implements ReferenceTerm {
 
@@ -30,11 +29,11 @@ public final class GitReferenceTerm implements ReferenceTerm {
     @Override
     public Set<Requirement> getRequirements() {
         return SupplySafe.trySupply(this::getMasterHead).get()
-                .flatMap(DoSafe.tryDo(this::startFlatWalk))
-                .map(this::getObjectIdStream)
-                .orElse(Stream.empty())
-                .map(this::toRequirement)
-                .collect(Collectors.toSet());
+            .flatMap(DoSafe.tryDo(this::startFlatWalk))
+            .map(this::getObjectIdStream)
+            .orElse(Stream.empty())
+            .map(this::toRequirement)
+            .collect(Collectors.toSet());
     }
 
     private Requirement toRequirement(ObjectId objectId) {

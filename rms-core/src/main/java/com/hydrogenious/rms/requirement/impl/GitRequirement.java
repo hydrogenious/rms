@@ -1,11 +1,10 @@
 package com.hydrogenious.rms.requirement.impl;
 
 import com.hydrogenious.rms.requirement.Requirement;
+import java.io.IOException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.Repository;
-
-import java.io.IOException;
 
 // @todo 2:00m create generic interface for Revision and retrieve revision history for requirement
 public final class GitRequirement implements Requirement {

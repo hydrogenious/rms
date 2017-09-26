@@ -3,10 +3,9 @@ package com.hydrogenious.rms.referenceterms.impl;
 import com.hydrogenious.rms.referenceterms.ReferenceTerm;
 import com.hydrogenious.rms.referenceterms.ReferenceTermsApi;
 import com.hydrogenious.rms.referenceterms.ReferenceTermsRepository;
+import java.util.Set;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Set;
 
 @RestController
 public final class ReferenceTermsApiWeb implements ReferenceTermsApi {
