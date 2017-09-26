@@ -3,6 +3,8 @@ package com.hydrogenious.rms.referenceterms.impl;
 import com.hydrogenious.rms.referenceterms.ReferenceTerm;
 import com.hydrogenious.rms.requirement.Requirement;
 import com.hydrogenious.rms.requirement.impl.GitRequirement;
+import com.hydrogenious.rms.util.DoSafe;
+import com.hydrogenious.rms.util.SupplySafe;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
@@ -11,7 +13,6 @@ import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -28,8 +29,8 @@ public final class GitReferenceTerm implements ReferenceTerm {
 
     @Override
     public Set<Requirement> getRequirements() {
-        return tryGetMasterHead()
-                .flatMap(this::tryStartFlatWalk)
+        return SupplySafe.trySupply(this::getMasterHead).get()
+                .flatMap(DoSafe.tryDo(this::startFlatWalk))
                 .map(this::getObjectIdStream)
                 .orElse(Stream.empty())
                 .map(this::toRequirement)
@@ -57,22 +58,14 @@ public final class GitReferenceTerm implements ReferenceTerm {
         return ids.build();
     }
 
-    private Optional<TreeWalk> tryStartFlatWalk(Ref head) {
+    private TreeWalk startFlatWalk(Ref head) throws IOException {
         try (RevWalk revWalk = new RevWalk(repository)) {
             RevTree masterTree = revWalk.parseCommit(head.getObjectId()).getTree();
-            return Optional.ofNullable(TreeWalk.forPath(repository, REQUIREMENTS_PATH, masterTree));
-        } catch (IOException e) {
-            e.printStackTrace();
+            return TreeWalk.forPath(repository, REQUIREMENTS_PATH, masterTree);
         }
-        return Optional.empty();
     }
 
-    private Optional<Ref> tryGetMasterHead() {
-        try {
-            return Optional.ofNullable(repository.findRef(MASTER_HEAD));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
+    private Ref getMasterHead() throws IOException {
+        return repository.findRef(MASTER_HEAD);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Set;
 
 @RestController
-public class ReferenceTermsApiWeb implements ReferenceTermsApi {
+public final class ReferenceTermsApiWeb implements ReferenceTermsApi {
 
     private final ReferenceTermsRepository referenceTermsRepository;
 

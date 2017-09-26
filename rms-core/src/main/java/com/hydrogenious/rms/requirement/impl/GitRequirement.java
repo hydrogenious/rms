@@ -8,7 +8,7 @@ import org.eclipse.jgit.lib.Repository;
 import java.io.IOException;
 
 // @todo 2:00m create generic interface for Revision and retrieve revision history for requirement
-public class GitRequirement implements Requirement {
+public final class GitRequirement implements Requirement {
     private final Repository repository;
     private final ObjectId objectId;
 

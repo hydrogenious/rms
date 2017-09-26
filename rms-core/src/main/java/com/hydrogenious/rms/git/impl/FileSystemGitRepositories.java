@@ -1,6 +1,7 @@
 package com.hydrogenious.rms.git.impl;
 
 import com.hydrogenious.rms.git.GitRepositories;
+import com.hydrogenious.rms.util.DoSafe;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.RepositoryCache;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -42,13 +42,6 @@ public final class FileSystemGitRepositories implements GitRepositories {
     private Optional<Repository> tryGetRepository(final File folder) {
         return Optional.ofNullable(RepositoryCache.FileKey.resolve(folder, FS.DETECTED))
                 .map(it -> RepositoryCache.FileKey.lenient(it, FS.DETECTED))
-                .flatMap(key -> {
-                    try {
-                        return Optional.of(new FileRepository(key.getFile()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return Optional.empty();
-                });
+                .flatMap(DoSafe.tryDo(key -> new FileRepository(key.getFile())));
     }
 }
