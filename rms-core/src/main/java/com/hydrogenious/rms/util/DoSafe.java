@@ -3,7 +3,7 @@ package com.hydrogenious.rms.util;
 import java.util.Optional;
 import java.util.function.Function;
 
-// @todo 0:30m add logger and log ignored exception
+// @todo #0:30m add logger and log ignored exception
 public final class DoSafe<T, R, E extends Exception> implements Function<T, Optional<R>> {
     private final FunctionWithCheckedThrows<T, R, E> delegate;
 
