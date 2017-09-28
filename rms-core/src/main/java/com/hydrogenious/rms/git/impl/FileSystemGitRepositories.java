@@ -1,6 +1,10 @@
 package com.hydrogenious.rms.git.impl;
 
 import com.hydrogenious.rms.git.GitRepositories;
+import com.hydrogenious.rms.util.DoSafe;
+import java.io.File;
+import java.util.Optional;
+import java.util.stream.Stream;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.RepositoryCache;
@@ -8,11 +12,6 @@ import org.eclipse.jgit.util.FS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @Component
 public final class FileSystemGitRepositories implements GitRepositories {
@@ -33,22 +32,15 @@ public final class FileSystemGitRepositories implements GitRepositories {
         }
 
         return Stream.of(subFolders)
-                .parallel()
-                .map(this::tryGetRepository)
-                .filter(Optional::isPresent)
-                .map(Optional::get);
+            .parallel()
+            .map(this::tryGetRepository)
+            .filter(Optional::isPresent)
+            .map(Optional::get);
     }
 
     private Optional<Repository> tryGetRepository(final File folder) {
         return Optional.ofNullable(RepositoryCache.FileKey.resolve(folder, FS.DETECTED))
-                .map(it -> RepositoryCache.FileKey.lenient(it, FS.DETECTED))
-                .flatMap(key -> {
-                    try {
-                        return Optional.of(new FileRepository(key.getFile()));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return Optional.empty();
-                });
+            .map(it -> RepositoryCache.FileKey.lenient(it, FS.DETECTED))
+            .flatMap(DoSafe.tryDo(key -> new FileRepository(key.getFile())));
     }
 }
