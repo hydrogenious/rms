@@ -4,6 +4,13 @@ import com.hydrogenious.rms.git.impl.FileSystemGitRepositories;
 import com.hydrogenious.rms.referenceterms.ReferenceTerm;
 import com.hydrogenious.rms.referenceterms.ReferenceTermsRepository;
 import com.hydrogenious.rms.requirement.Requirement;
+import com.hydrogenious.rms.revision.Revision;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.BaseRepositoryBuilder;
@@ -16,16 +23,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 
 public class ReferenceTermsApiWebTest {
 
     public static final String REQUIREMENT_FILE_CONTENT = "Requirement 1";
+    public static final String REQUIREMENT_FILE_CONTENT_EXT = "Requirement 1 extended";
 
     @Rule
     public final TemporaryFolder folder = new TemporaryFolder();
@@ -57,6 +59,15 @@ public class ReferenceTermsApiWebTest {
 
         git.add().addFilepattern("requirements/1.document").call();
         git.commit().setMessage("yep").call();
+
+        try (FileWriter fileWriter = new FileWriter(requirementFile)) {
+            fileWriter.write(REQUIREMENT_FILE_CONTENT_EXT);
+            fileWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        git.commit().setMessage("another yep").setAll(true).call();
     }
 
     @Test
@@ -75,6 +86,15 @@ public class ReferenceTermsApiWebTest {
                 allReferenceTerms.stream().flatMap(it -> it.getRequirements().stream())
                         .collect(Collectors.toSet());
         Assert.assertThat(allRequirements, Matchers.is(Matchers.iterableWithSize(1)));
-        Assert.assertArrayEquals(allRequirements.iterator().next().toByteArray(), REQUIREMENT_FILE_CONTENT.getBytes());
+        Assert.assertArrayEquals(allRequirements.iterator().next().toByteArray(), REQUIREMENT_FILE_CONTENT_EXT.getBytes());
+
+        List<Revision<Requirement>> allRequirementRevisions = allRequirements.stream()
+            .flatMap(Requirement::getRevisions)
+            .collect(Collectors.toList());
+
+        Assert.assertThat(allRequirementRevisions, Matchers.is(Matchers.iterableWithSize(2)));
+
+        Assert.assertArrayEquals(allRequirementRevisions.get(0).getRevision().toByteArray(), REQUIREMENT_FILE_CONTENT_EXT.getBytes());
+        Assert.assertArrayEquals(allRequirementRevisions.get(1).getRevision().toByteArray(), REQUIREMENT_FILE_CONTENT.getBytes());
     }
 }

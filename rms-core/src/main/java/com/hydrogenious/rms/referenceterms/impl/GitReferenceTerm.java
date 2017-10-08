@@ -1,5 +1,7 @@
 package com.hydrogenious.rms.referenceterms.impl;
 
+import com.hydrogenious.rms.jgit.FlatTreeWalkSpliterator;
+import com.hydrogenious.rms.jgit.GitBlob;
 import com.hydrogenious.rms.referenceterms.ReferenceTerm;
 import com.hydrogenious.rms.requirement.Requirement;
 import com.hydrogenious.rms.requirement.impl.GitRequirement;
@@ -9,7 +11,7 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.eclipse.jgit.lib.ObjectId;
+import java.util.stream.StreamSupport;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevTree;
@@ -36,31 +38,20 @@ public final class GitReferenceTerm implements ReferenceTerm {
             .collect(Collectors.toSet());
     }
 
-    private Requirement toRequirement(ObjectId objectId) {
-        return new GitRequirement(repository, objectId);
+    private Requirement toRequirement(GitBlob blob) {
+        return new GitRequirement(repository, blob);
     }
 
-    private Stream<ObjectId> getObjectIdStream(TreeWalk walk) {
-        Stream.Builder<ObjectId> ids = Stream.builder();
-
-        try {
-            walk.enterSubtree();
-
-            while (walk.next()) {
-                ObjectId id = walk.getObjectId(0);
-                ids.accept(id);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return ids.build();
+    private Stream<GitBlob> getObjectIdStream(TreeWalk walk) {
+        return StreamSupport.stream(new FlatTreeWalkSpliterator(walk), false);
     }
 
     private TreeWalk startFlatWalk(Ref head) throws IOException {
         try (RevWalk revWalk = new RevWalk(repository)) {
             RevTree masterTree = revWalk.parseCommit(head.getObjectId()).getTree();
-            return TreeWalk.forPath(repository, REQUIREMENTS_PATH, masterTree);
+            TreeWalk treeWalk = TreeWalk.forPath(repository, REQUIREMENTS_PATH, masterTree);
+            treeWalk.enterSubtree();
+            return treeWalk;
         }
     }
 
