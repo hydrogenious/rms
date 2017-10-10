@@ -1,3 +1,13 @@
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '1.10'
+    id 'java'
+}
+
+lombok {
+    version = "1.16.4"
+    sha256 = "3ca225ce3917eac8bf4b7d2186845df4e70dcdede356dca8537b6d78a535c91e"
+}
+
 dependencies {
     compile "org.eclipse.jgit:org.eclipse.jgit:4.8.0.201706111038-r"
 
