@@ -18,8 +18,8 @@ public class GitRequirementRepository implements RequirementRepository {
     }
 
     @Override
-    public void save(String referenceTermsName, RequirementDto requirementDto) {
-         final GitRepository gitRepository = gitRepositories.repository(referenceTermsName);
+    public void save(String referenceTermName, RequirementDto requirementDto) {
+         final GitRepository gitRepository = gitRepositories.repository(referenceTermName);
         // @todo #6:30m add commitFile to GitRepository
         // gitRepository.commitFile(requirementDto.getName(), requirementDto.getContent());
     }

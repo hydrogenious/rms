@@ -22,6 +22,7 @@ public final class GitReferenceTerm implements ReferenceTerm {
     public static final String REQUIREMENTS_PATH = "requirements";
     private final Repository repository;
 
+    // @todo #7:60m Add GitRepository as dependency, not simple Repository
     public GitReferenceTerm(final Repository repository) {
         this.repository = repository;
     }
