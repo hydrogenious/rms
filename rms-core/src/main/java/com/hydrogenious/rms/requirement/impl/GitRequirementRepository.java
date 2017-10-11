@@ -2,6 +2,7 @@ package com.hydrogenious.rms.requirement.impl;
 
 import com.hydrogenious.rms.git.GitRepositories;
 import com.hydrogenious.rms.git.GitRepository;
+import com.hydrogenious.rms.git.exceptions.GitRepositoryException;
 import com.hydrogenious.rms.requirement.RequirementDto;
 import com.hydrogenious.rms.requirement.RequirementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,8 @@ public class GitRequirementRepository implements RequirementRepository {
     }
 
     @Override
-    public void save(String referenceTermName, RequirementDto requirementDto) {
+    public void save(String referenceTermName, RequirementDto requirementDto) throws GitRepositoryException {
          final GitRepository gitRepository = gitRepositories.repository(referenceTermName);
-        // @todo #6:30m add commitFile to GitRepository
-        // gitRepository.commitFile(requirementDto.getName(), requirementDto.getContent());
+         gitRepository.commitFile(requirementDto.getName(), requirementDto.getContent());
     }
 }
