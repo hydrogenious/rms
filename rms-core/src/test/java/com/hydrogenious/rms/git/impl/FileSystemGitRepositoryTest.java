@@ -1,11 +1,12 @@
 package com.hydrogenious.rms.git.impl;
 
+import java.io.File;
+import org.cactoos.text.TextOf;
 import org.hamcrest.core.Is;
+import static org.junit.Assert.assertThat;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
-import static org.junit.Assert.assertThat;
 
 public class FileSystemGitRepositoryTest {
 
@@ -19,7 +20,8 @@ public class FileSystemGitRepositoryTest {
 
         fileSystemRepository.commitFile("some_name", "some content");
 
-        assertThat(folder.getRoot().listFiles()[1].getName(), Is.is("some_name"));
+        assertThat(new File(folder.getRoot().getPath(), "some_name").exists(), Is.is(true));
+        assertThat(new TextOf(new File(folder.getRoot().getPath(), "some_name")).asString(), Is.is("some content"));
     }
 
 }
