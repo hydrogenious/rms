@@ -2,12 +2,12 @@ package com.hydrogenious.rms.git.impl;
 
 import com.hydrogenious.rms.git.GitRepository;
 import com.hydrogenious.rms.git.exceptions.GitRepositoryException;
+import java.io.File;
+import org.eclipse.jgit.annotations.NonNull;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.RepositoryCache;
 import org.eclipse.jgit.util.FS;
-
-import java.io.File;
 
 /**
  * Декоратор над репозиторием, если репозитория не существует, то он его создаст перед выполнением
@@ -16,7 +16,7 @@ import java.io.File;
 public class SelfInitRepository implements GitRepository {
     private final GitRepository origin;
 
-    public SelfInitRepository(GitRepository origin) {
+    public SelfInitRepository(@NonNull final GitRepository origin) {
         this.origin = origin;
     }
 
@@ -27,9 +27,10 @@ public class SelfInitRepository implements GitRepository {
     }
 
     @Override
-    public void commitFile(String name, String content) throws GitRepositoryException {
+    public void commitFile(@NonNull final String name, @NonNull final String content,
+                           @NonNull final String message) throws GitRepositoryException {
         lazyInit();
-        origin.commitFile(name, content);
+        origin.commitFile(name, content, message);
     }
 
     private void lazyInit() throws GitRepositoryException {

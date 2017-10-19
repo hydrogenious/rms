@@ -17,7 +17,7 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 public class FileSystemGitRepository implements GitRepository {
     private final String path;
 
-    public FileSystemGitRepository(String path) {
+    public FileSystemGitRepository(@NonNull final String path) {
         this.path = path;
     }
 
@@ -27,7 +27,8 @@ public class FileSystemGitRepository implements GitRepository {
     }
 
     @Override
-    public void commitFile(@NonNull final String name, @NonNull final String content) throws GitRepositoryException {
+    public void commitFile(@NonNull final String name, @NonNull final String content,
+                           @NonNull final String message) throws GitRepositoryException {
         try (
             Repository repository = new FileRepositoryBuilder()
                 .setGitDir(new File(path, ".git"))
@@ -52,7 +53,7 @@ public class FileSystemGitRepository implements GitRepository {
                 .call();
 
             git.commit()
-                .setMessage("some message")
+                .setMessage(message)
                 .call();
         } catch (IOException | GitAPIException e) {
             throw new GitRepositoryException(e);

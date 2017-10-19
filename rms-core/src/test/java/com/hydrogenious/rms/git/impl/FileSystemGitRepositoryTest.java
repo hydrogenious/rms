@@ -18,10 +18,11 @@ public class FileSystemGitRepositoryTest {
         final SelfInitRepository fileSystemRepository = new SelfInitRepository(
             new FileSystemGitRepository(folder.getRoot().getPath()));
 
-        fileSystemRepository.commitFile("some_name", "some content");
+        fileSystemRepository.commitFile("some_name", "some content", "some message");
 
-        assertThat(new File(folder.getRoot().getPath(), "some_name").exists(), Is.is(true));
-        assertThat(new TextOf(new File(folder.getRoot().getPath(), "some_name")).asString(), Is.is("some content"));
+        final File savedFile = new File(folder.getRoot().getPath(), "some_name");
+        assertThat(savedFile.exists(), Is.is(true));
+        assertThat(new TextOf(savedFile).asString(), Is.is("some content"));
     }
 
 }

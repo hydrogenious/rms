@@ -27,7 +27,7 @@ public class RequirementsApiWeb implements RequirementsApi {
         try {
             // must be something like: new GitReferenceTerm(referenceTermName)
             //                             .addRequirement(new Requirement(requirementDto));
-            requirementRepository.save(referenceTermsName, requirementDto);
+            requirementRepository.save(referenceTermsName, requirementDto, "update requirement");
         } catch (GitRepositoryException e) {
             e.printStackTrace();
         }
