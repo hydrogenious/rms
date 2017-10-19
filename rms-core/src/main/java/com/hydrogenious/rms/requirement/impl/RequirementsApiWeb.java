@@ -1,5 +1,6 @@
 package com.hydrogenious.rms.requirement.impl;
 
+import com.hydrogenious.rms.git.exceptions.GitRepositoryException;
 import com.hydrogenious.rms.requirement.RequirementDto;
 import com.hydrogenious.rms.requirement.RequirementRepository;
 import com.hydrogenious.rms.requirement.RequirementsApi;
@@ -23,6 +24,10 @@ public class RequirementsApiWeb implements RequirementsApi {
     @Override
     public void save(@NonNull final String referenceTermsName,
                      @RequestBody @NonNull final RequirementDto requirementDto) {
-        requirementRepository.save(referenceTermsName, requirementDto);
+        try {
+            requirementRepository.save(referenceTermsName, requirementDto);
+        } catch (GitRepositoryException e) {
+            e.printStackTrace();
+        }
     }
 }

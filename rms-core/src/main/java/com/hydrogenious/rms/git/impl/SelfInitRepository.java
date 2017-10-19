@@ -14,15 +14,26 @@ import java.io.File;
  * любой операции над репозиторием
  */
 public class SelfInitRepository implements GitRepository {
-    private final GitRepository target;
+    private final GitRepository origin;
 
-    public SelfInitRepository(GitRepository target) {
-        this.target = target;
+    public SelfInitRepository(GitRepository origin) {
+        this.origin = origin;
     }
 
     @Override
     public String path() throws GitRepositoryException {
-        final File repositoryDirectory = new File(target.path());
+        lazyInit();
+        return origin.path();
+    }
+
+    @Override
+    public void commitFile(String name, String content) throws GitRepositoryException {
+        lazyInit();
+        origin.commitFile(name, content);
+    }
+
+    private void lazyInit() throws GitRepositoryException {
+        final File repositoryDirectory = new File(origin.path());
         if (!RepositoryCache.FileKey.isGitRepository(repositoryDirectory, FS.DETECTED)) {
             try {
                 Git.init().setDirectory(repositoryDirectory).call();
@@ -30,6 +41,5 @@ public class SelfInitRepository implements GitRepository {
                 throw new GitRepositoryException(e);
             }
         }
-        return target.path();
     }
 }
