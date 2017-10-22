@@ -1,11 +1,12 @@
 package com.hydrogenious.rms.requirement.impl;
 
-import com.hydrogenious.rms.git.exceptions.GitRepositoryException;
-import com.hydrogenious.rms.requirement.RequirementDto;
-import com.hydrogenious.rms.requirement.RequirementRepository;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.hydrogenious.rms.requirement.RequirementsApi;
+import java.nio.file.Paths;
 import org.eclipse.jgit.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,23 +14,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RequirementsApiWeb implements RequirementsApi {
 
-    private final RequirementRepository requirementRepository;
+    private final String repositoriesRootPath;
 
     @Autowired
-    public RequirementsApiWeb(RequirementRepository requirementRepository) {
-        this.requirementRepository = requirementRepository;
+    public RequirementsApiWeb(@Value("${repositoriesRootPath}") @NonNull final String repositoriesRootPath) {
+        this.repositoriesRootPath = repositoriesRootPath;
     }
 
-    @PutMapping("/requirements")
+    @PutMapping("/requirements/{referenceTermName}")
     @Override
-    public void save(@NonNull final String referenceTermsName,
-                     @RequestBody @NonNull final RequirementDto requirementDto) {
-        try {
-            // must be something like: new GitReferenceTerm(referenceTermName)
-            //                             .addRequirement(new Requirement(requirementDto));
-            requirementRepository.save(referenceTermsName, requirementDto, "update requirement");
-        } catch (GitRepositoryException e) {
-            e.printStackTrace();
-        }
+    public void save(@PathVariable("referenceTermName") @NonNull final String referenceTermName,
+                     @RequestBody @NonNull final ObjectNode requirementJson) {
+        new GitRequirement(
+            Paths.get(repositoriesRootPath, referenceTermName).toString(),
+            requirementJson
+        ).update();
     }
 }

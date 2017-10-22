@@ -21,14 +21,14 @@ public class SelfInitRepository implements GitRepository {
     }
 
     @Override
-    public String path() throws GitRepositoryException {
+    public String path() {
         lazyInit();
         return origin.path();
     }
 
     @Override
     public void commitFile(@NonNull final String name, @NonNull final String content,
-                           @NonNull final String message) throws GitRepositoryException {
+                           @NonNull final String message) {
         lazyInit();
         origin.commitFile(name, content, message);
     }
