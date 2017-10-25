@@ -1,7 +1,7 @@
 package com.hydrogenious.rms.referenceterms;
 
-import java.util.Set;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public interface ReferenceTermsApi {
-    Set<? extends ReferenceTerm> findAllReferenceTerms();
+    ObjectNode findAllReferenceTerms();
 }
